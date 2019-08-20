@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+ <!DOCTYPE mapper 
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kgc.mapper.UserMapper">
+	<!-- 地址实体类映射 -->
+	<resultMap type="Address" id="addressMap">
+		<result column="a_id" property="id" />
+		<result column="contact" property="contact" />
+		<result column="addressDesc" property="addressDesc" />
+		<result column="postCode" property="postCode" />
+		<result column="tel" property="tel" />
+	</resultMap>
+	<!-- 角色实体类映射 -->
+	<resultMap type="Role" id="roleMap">
+		<result column="a_id" property="id" />
+		<result column="roleCode" property="roleCode" />
+		<result column="roleName" property="roleName" />
+	</resultMap>
+	<!-- user实体类映射 -->
+	<resultMap type="User" id="userMap">
+		<result column="id" property="id" />
+		<result property="userCode" column="userCode" />
+		<result property="userName" column="userName" />
+		<result property="phone" column="phone" />
+		<result property="birthday" column="birthday" />
+		<result property="gender" column="gender" />
+		<result property="userRole" column="userRole" />
+		<collection javaType="Role" property="role" resultMap="roleMap" />
+	</resultMap>
+	<!-- user地址映射 -->
+	<resultMap type="User" id="userAdressMap">
+		<result column="id" property="id" />
+		<result property="userCode" column="userCode" />
+		<result property="userName" column="userName" />
+		<result property="phone" column="phone" />
+		<result property="birthday" column="birthday" />
+		<result property="gender" column="gender" />
+		<result property="userRole" column="userRole" />
+		<collection property="addressList" ofType="Address"
+			resultMap="addressMap" />
+	</resultMap>
+	<select id="findUserById" parameterType="int" resultType="User">
+		select
+		* from smbms_user where id=#{id}
+	</select>
+
+	<select id="findUserByName" parameterType="String" resultType="User">
+		select * from smbms_user where userName = #{value}
+	</select>
+
+	<select id="findUserLikeName" parameterType="String" resultType="User">
+		select * from smbms_user where userName like '%${value}%'
+	</select>
+
+	<insert id="insertUser" parameterType="User">
+		insert into
+		smbms_user(userCode,userName,userPassword,gender,address,phone,userRole,birthday,idPicPath,workPicPath)
+		values(#{userCode},#{userName},#{userPassword},#{gender},#{address},#{phone},
+		#{userRole},#{birthday},#{idPicPath},#{workPicPath})
+	</insert>
+
+	<delete id="deleteUser" parameterType="int">
+		delete from smbms_user
+		where id = #{id}
+	</delete>
+
+	<update id="updateUser" parameterType="User">
+		update smbms_user set
+		username=#{userName},birthday=#{birthday},gender=#{gender},address=#{address},
+		phone=#{phone},userRole=#{userRole}
+		where id=#{id}
+	</update>
+
+	<!-- <select id="selectAll" resultType="User"> select * from smbms_user 
+		</select> -->
+	<!-- 一对一查询 -->
+	<select id="selectRoleById" parameterType="int" resultMap="userMap">
+		SELECT u.* , r.id AS r_id , r.roleName FROM smbms_user AS u
+		,smbms_role AS r
+		WHERE u.userRole=r.id and u.id = #{id}
+	</select>
+	<!-- 一对多 -->
+	<select id="selectAdressById" parameterType="int" resultMap="userAdressMap">
+		SELECT u.* , a.id AS a_id , a.contact ,a.addressDesc, a.postCode,
+		a.tel
+		FROM smbms_user AS u ,smbms_address AS a
+		WHERE u.id=a.userId and
+		u.id =
+		#{id}
+	</select>
+
+	<select id="selectAll" resultMap="userMap">
+		sELECT u.* , r.id AS r_id , r.roleName FROM smbms_user AS u
+		,smbms_role AS r
+		WHERE u.userRole=r.id
+		<if test="userRole != null &amp;&amp; userRole != 0">
+			and userRole = #{userRole}
+		</if>
+		<if test="userName != null &amp;&amp; userName != ''">
+			and userName like '%${userName}%'
+		</if>
+	</select>
+</mapper>
