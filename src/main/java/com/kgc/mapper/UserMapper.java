@@ -75,4 +75,13 @@ public interface UserMapper
      */
     @Delete("delete from smbms_user where id=#{uid}")
     public int deleteUserById(Integer uid);
+    /**
+     * 修改密码
+     * <一句话功能简述>
+     * <功能详细描述>
+     * @param user
+     * @return
+     * @see [类、类#方法、类#成员]
+     */
+    public int updateUserPwd(User user);
 }

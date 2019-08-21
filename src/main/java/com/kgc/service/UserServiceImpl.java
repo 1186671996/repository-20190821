@@ -72,5 +72,13 @@ public class UserServiceImpl implements UserService
         
         return userMapper.updateUser(user);
     }
+
+    @Override
+    public int updataUserPwd(User user)
+    {
+        // TODO Auto-generated method stub
+        userMapper.updateUserPwd(user);
+        return 0;
+    }
     
 }

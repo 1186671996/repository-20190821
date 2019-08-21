@@ -1,3 +1,5 @@
+<%@page import="com.kgc.pojo.User"%>
+<%@page import="com.kgc.tools.Tools"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page isELIgnored="false"%>
@@ -42,7 +44,7 @@
 				<td><span> <c:if test="${user.gender==1}">男</c:if> <c:if
 							test="${user.gender==2}">女</c:if>
 				</span></td>
-				<td><span>未知</span></td>
+				<td><span>${user.age }</span></td>
 				<td><span>${user.phone}</span></td>
 				<td><span>${user.role.roleName}</span></td>
 				<td><span><a class="viewUser" href="javascript:;"

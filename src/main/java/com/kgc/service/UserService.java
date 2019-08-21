@@ -72,4 +72,13 @@ public interface UserService
      * @see [类、类#方法、类#成员]
      */
     public int updataUser(User user);
+    /**
+     * 修改密码
+     * <一句话功能简述>
+     * <功能详细描述>
+     * @param user
+     * @return
+     * @see [类、类#方法、类#成员]
+     */
+    public int updataUserPwd(User user);
 }

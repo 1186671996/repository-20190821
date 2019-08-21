@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.tools.Tool;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomUtils;
@@ -27,6 +28,7 @@ import com.github.pagehelper.PageHelper;
 import com.kgc.pojo.Role;
 import com.kgc.pojo.User;
 import com.kgc.service.UserService;
+import com.kgc.tools.Tools;
 
 @Controller
 @RequestMapping
@@ -91,7 +93,7 @@ public class UserController
         }
         PageHelper.startPage(pageIndex, 4);
         List<User> list = userService.selectAll(user);
-        
+        System.out.println("**"+list.get(0).getAddress());
         Page page = (Page)list;
         System.out.println(list);
         model.addAttribute("userList", list);
@@ -118,37 +120,16 @@ public class UserController
         return "useradd";
         
     }
-    
     /**
-     * 添加 <一句话功能简述> <功能详细描述>
-     * 
+     * 上传
+     * <一句话功能简述>
+     * <功能详细描述>
      * @param user
+     * @param session
+     * @param request
+     * @param attachs
      * @return
-     * @throws Exception
      * @see [类、类#方法、类#成员]
-     */
-    /*
-     * @RequestMapping(value="/useraddsave.html",method=RequestMethod.POST) public String useraddsave(Model model, User
-     * user, HttpSession session,HttpServletRequest request,
-     * 
-     * @RequestParam(value ="a_idPicPath", required = false) MultipartFile attach) throws Exception {
-     * System.out.println(user); String idPicPath = null; if (!attach.isEmpty()) { String path = request.getSession().
-     * getServletContext().getRealPath("statics"+File.separator+"uploadfiles"); String oldFileName =
-     * attach.getOriginalFilename(); String prefix = FilenameUtils.getExtension(oldFileName); int filesize = 500000; if
-     * (attach.getSize() > filesize) { request .setAttribute("uploadFilError", "上传文件大小不超过500kb"); return "useradd"; }
-     * else if (prefix.equalsIgnoreCase("jpg") || prefix.equalsIgnoreCase("png") || prefix.equalsIgnoreCase("jpeg") ||
-     * prefix.equalsIgnoreCase("pneg")) { String fileName =
-     * System.currentTimeMillis()+RandomUtils.nextInt()+"_Personal.jpg"; File targetFile = new File(path, fileName); if
-     * (!targetFile.exists()) { targetFile.mkdirs(); } try { attach.transferTo(targetFile); } catch (Exception e) {
-     * e.printStackTrace(); request.setAttribute("uploadFileError", "上传失败"); return "useradd"; // TODO: handle exception
-     * } idPicPath = path + File.separator + fileName; }else { request.setAttribute("uploadFileError", "上传图片失败"); return
-     * "useradd"; } } user.setIdPicPath(idPicPath); //
-     * user.setCreatedBy(((User)session.getAttribute(Constants.USER_SESSION)).getId()); user.setCreationDate(new
-     * Date());
-     * 
-     * userService.insertUser(user); return "redirect:userlist.html";
-     * 
-     * }
      */
     @RequestMapping(value="/useraddsave.html", method = RequestMethod.POST)
     public String addUserSave(User user, HttpSession session, HttpServletRequest request,
@@ -400,14 +381,24 @@ public class UserController
         
     }
     
+    /**
+     * 密码修改
+     * <一句话功能简述>
+     * <功能详细描述>
+     * @param req
+     * @return
+     * @throws Exception
+     * @see [类、类#方法、类#成员]
+     */
     @RequestMapping("/pwdmodify.do")
     public String dopwdmodify( HttpServletRequest req)
         throws Exception
     {
-        String oldpassword = req.getParameter("oldpassword");
         String newpassword = req.getParameter("newpassword");
-        String rnewpassword = req.getParameter("rnewpassword");
-        return null;
+        User user = (User)req.getSession().getAttribute("userSession");
+        user.setUserPassword(newpassword);
+        userService.updataUserPwd(user);
+        return "redirect:pwdmodify.html";
         
     }
     

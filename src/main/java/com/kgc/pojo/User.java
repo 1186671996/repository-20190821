@@ -7,6 +7,7 @@ import org.junit.experimental.theories.DataPoint;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.kgc.tools.Tools;
 
 /**
  * 用户 <一句话功能简述> <功能详细描述>
@@ -50,6 +51,8 @@ public class User
     private String idPicPath;//文件上传保存路径
     
     private String workPicPath;//文件上传保存路径
+    
+    private int age; //年龄
     
     private Role role; // 一对一 对应关系
     
@@ -99,7 +102,24 @@ public class User
     {
         return gender;
     }
-    
+  //出生日期转换成年龄
+    public int getAge()
+    {
+        if (null != birthday)
+        {
+            return Tools.getAgeByBirth(birthday);
+        }
+        else {
+            return 0;
+        }
+        
+    }
+
+    public void setAge(int age)
+    {
+        this.age = age;
+    }
+
     public void setGender(Integer gender)
     {
         this.gender = gender;

@@ -18,14 +18,36 @@ public class BillServiceImpl implements BillService
     public List<Bill> selectLikeName(String productName)
     {
         // TODO Auto-generated method stub
-        return billMapper.selectLikeName(productName);
+        return null;
     }
 
     @Override
     public List<Bill> selectByLike(String productName, int providerId, int isPayment)
     {
         // TODO Auto-generated method stub
-        return billMapper.selectByLike(productName, providerId, isPayment);
+        return null;
+    }
+
+    @Override
+    public List<Bill> selectAll()
+    {
+        // TODO Auto-generated method stub
+        return billMapper.selectAll();
+    }
+
+    @Override
+    public Bill selectBill(int id)
+    {
+        // TODO Auto-generated method stub
+        return billMapper.selectBill(id);
+    }
+
+    @Override
+    public int delBill(int billId)
+    {
+        // TODO Auto-generated method stub
+        
+        return billMapper.delBill(billId);
     }
     
     

@@ -26,6 +26,7 @@
 		<result property="userName" column="userName" />
 		<result property="phone" column="phone" />
 		<result property="birthday" column="birthday" />
+		<result property="address" column="address" />
 		<result property="gender" column="gender" />
 		<result property="userRole" column="userRole" />
 		<collection javaType="Role" property="role" resultMap="roleMap" />
@@ -67,6 +68,12 @@
 		where id = #{id}
 	</delete>
 
+	<update id="updateUserPwd" parameterType="User">
+		update smbms_user set
+		userPassword=#{userPassword}
+		where id=#{id}
+	</update>
+	
 	<update id="updateUser" parameterType="User">
 		update smbms_user set
 		username=#{userName},birthday=#{birthday},gender=#{gender},address=#{address},
